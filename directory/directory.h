@@ -5,7 +5,7 @@
 #include "../file/file.h"
 
 typedef struct directory {
-  char name;
+  char* name;
   struct directory* next;     // diretórios irmãos
   struct directory* sub_dirs; // diretórios filhos
   struct file* files;         // arquivos presentes no diretório
