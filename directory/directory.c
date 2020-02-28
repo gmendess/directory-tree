@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 #include "directory.h"
 #include "../file/file.h"
+#include "../utils/utils.h"
 
 // Variável que representa o diretório raiz da árvore de diretórios
 static Directory root;
@@ -29,4 +31,24 @@ Directory get_root_dir(void) {
 
 Directory pwd(void) {
   return *wd;
+}
+
+Directory* alloc_directory(const char* name) {
+  Directory* new_dir = malloc(sizeof(Directory));
+
+  if(!new_dir) {
+    fprintf(stderr, "Falha ao alocar memória para criação do diretório!\n");
+    return NULL;
+  }
+
+  size_t size = strlen(name) + 1; // tamanho da string + '\0'
+  new_dir->name = malloc(size);
+  memcpy(new_dir->name, name, size);
+
+  new_dir->creation_time = time_now();
+  new_dir->files    = NULL;
+  new_dir->next     = NULL;
+  new_dir->sub_dirs = NULL;
+
+  return new_dir;
 }
