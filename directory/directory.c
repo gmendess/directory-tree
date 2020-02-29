@@ -62,8 +62,8 @@ Directory get_root_dir(void) {
   return root;
 }
 
-Directory pwd(void) {
-  return *wd;
+Directory* pwd(void) {
+  return wd;
 }
 
 Directory* alloc_directory(const char* name) {

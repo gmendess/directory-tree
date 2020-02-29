@@ -14,7 +14,7 @@ typedef struct directory {
 
 void init(void);
 Directory get_root_dir(void);
-Directory pwd(void);
+Directory* pwd(void);
 Directory* alloc_directory(const char* name);
 
 #endif // _DIRECTORY_H_
