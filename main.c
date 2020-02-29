@@ -11,20 +11,17 @@ int main() {
   Directory* wd = pwd();
 
   mkdir("dir1");
+  cd("dir1");
   mkdir("dir2");
 
   printf(
-    "%s\n"     \
-    " `- %s\n" \
-    " `- %s\n", 
-    wd->name, 
-    wd->sub_dirs->name, 
-    wd->sub_dirs->next->name
+    "Diretorio: %s\n" \
+    "Diretorio pai: %s\n" \
+    "Diretorio avo: %s\n",
+    wd->sub_dirs->sub_dirs->name,
+    wd->sub_dirs->sub_dirs->father->name,
+    wd->sub_dirs->sub_dirs->father->father->name
   );
-
-  cd("dir2");
-  wd = pwd(); // pegando referência do novo diretório atual
-  printf("%s\n", wd->name);
 
   return EXIT_SUCCESS;
 }
