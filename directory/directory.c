@@ -85,3 +85,18 @@ Directory* alloc_directory(const char* name) {
 
   return new_dir;
 }
+
+mkdir_ret mkdir(const char* pathname) {
+  if(!pathname)
+    return EPATH;
+
+  Directory* new_dir = alloc_directory(pathname);
+  Directory* last = __find_last_sub_directory(wd);
+
+  if(last == wd->sub_dirs)
+    wd->sub_dirs = new_dir;
+  else
+    last->next = new_dir;
+
+  return MKDIR_SUCCESS;
+}
