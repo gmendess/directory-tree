@@ -8,19 +8,27 @@ int main() {
 
   init();
   
-  Directory* wd = pwd();
+  mkdir("teste");
+  cd("teste");
+  mkdir("teste2");
+  cd("teste2");
+  mkdir("teste3");
+  cd("teste3");
+  mkdir("teste4");
 
-  mkdir("dir1");
-  cd("dir1");
-  mkdir("dir2");
+  Directory root = get_root_dir();
 
   printf(
-    "Diretorio: %s\n" \
-    "Diretorio pai: %s\n" \
-    "Diretorio avo: %s\n",
-    wd->sub_dirs->sub_dirs->name,
-    wd->sub_dirs->sub_dirs->father->name,
-    wd->sub_dirs->sub_dirs->father->father->name
+    "%s\n" \
+    " `- %s\n" \
+    "     `- %s\n" \
+    "         `- %s\n" \
+    "             `- %s\n",
+    root.name,
+    root.sub_dirs->name,
+    root.sub_dirs->sub_dirs->name,
+    root.sub_dirs->sub_dirs->sub_dirs->name,
+    root.sub_dirs->sub_dirs->sub_dirs->sub_dirs->name
   );
 
   return EXIT_SUCCESS;
