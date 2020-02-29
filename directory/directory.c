@@ -113,5 +113,21 @@ ret_t mkdir(const char* pathname) {
   else
     last->next = new_dir;
 
-  return MKDIR_SUCCESS;
+  return SUCCESS;
+}
+
+// Muda o diretório atual para o passado via parâmetro
+ret_t cd(const char* pathname) {
+  if(!pathname)
+    return EPATH;
+
+  Directory* target_dir = __find_directory(wd->sub_dirs, pathname);
+  if(target_dir) {
+    wd = target_dir;
+    return SUCCESS;
+  }
+  else {
+    fprintf(stderr, "Diretório não encontrado!\n");
+    return ENEXIST;
+  }
 }

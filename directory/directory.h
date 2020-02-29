@@ -13,9 +13,10 @@ typedef struct directory {
 } Directory;
 
 typedef enum {
-  MKDIR_SUCCESS,
-  EEXIT, // Erro, diretório já existe
-  EPATH  // pathname passado é inválido
+  SUCCESS,
+  EEXIST,  // Erro, diretório já existe
+  ENEXIST, // Erro, diretório não existe
+  EPATH    // Erro, pathname passado é inválido
 } ret_t;
 
 // Inicializa o diretório root e faz wd apontar para seu endereço
@@ -32,5 +33,8 @@ Directory* alloc_directory(const char* name);
 
 // Simula um mkdir, ou seja, cria um novo diretório no 'wd' atual
 ret_t mkdir(const char* pathname);
+
+// Muda o diretório atual para o passado via parâmetro
+ret_t cd(const char* pathname);
 
 #endif // _DIRECTORY_H_
