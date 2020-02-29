@@ -29,7 +29,7 @@ static Directory* __find_last_sub_directory(Directory* wd) {
   if(!wd)
     return NULL;
   else if(!wd->sub_dirs)
-    return wd->sub_dirs;
+    return wd;
 
   return __find_last_directory(wd->sub_dirs);
 }
@@ -93,7 +93,7 @@ mkdir_ret mkdir(const char* pathname) {
   Directory* new_dir = alloc_directory(pathname);
   Directory* last = __find_last_sub_directory(wd);
 
-  if(last == wd->sub_dirs)
+  if(last == wd)
     wd->sub_dirs = new_dir;
   else
     last->next = new_dir;
