@@ -1,5 +1,5 @@
 CC = gcc
-CC_FLAGS = -c -O3 -Wall -Werror
+CC_FLAGS = -c -O3 -Wall
 
 DIRECTORY = directory/directory
 FILE = file/file
