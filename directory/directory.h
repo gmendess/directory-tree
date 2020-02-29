@@ -18,10 +18,19 @@ typedef enum {
   EPATH  // pathname passado é inválido
 } mkdir_ret;
 
+// Inicializa o diretório root e faz wd apontar para seu endereço
 void init(void);
+
+// Retorna uma cópia do diretório root
 Directory get_root_dir(void);
+
+// Retorna referência para o diretório atual (working directory)
 Directory* pwd(void);
+
+// Aloca espaço na memória para conter uma struct Directory
 Directory* alloc_directory(const char* name);
+
+// Simula um mkdir, ou seja, cria um novo diretório no 'wd' atual
 mkdir_ret mkdir(const char* pathname);
 
 #endif // _DIRECTORY_H_

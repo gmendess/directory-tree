@@ -9,7 +9,7 @@
 // Variável que representa o diretório raiz da árvore de diretórios
 static Directory root;
 
-// Variável que representa o diretório atual (working directory)
+// Variável que armazena referência para o diretório atual (working directory)
 static Directory* wd;
 
 /* ------------------------------ FUNÇÕES STATIC INTERNAS ---------------------------------- */
@@ -18,6 +18,7 @@ static Directory* wd;
 // Obs:
 //   - Não valida se 'dir' é um ponteiro válido.
 //   - Se 'target_name' for NULL, procura pelo ultimo diretório
+//   - Retorna NULL apenas caso não exista nenhum nó com nome 'target_name'
 static Directory* __find_directory(Directory* dir, const char* target_name) {
   if(!target_name) {
     // percorre até o último nó
@@ -32,7 +33,7 @@ static Directory* __find_directory(Directory* dir, const char* target_name) {
   return dir;
 }
 
-// abstração para __find_directory
+// abstração para __find_directory. Busca pelo último diretório na lista 'sub_dirs'
 static Directory* __find_last_sub_directory(Directory* wd) {
   if(!wd)
     return NULL;
@@ -42,7 +43,7 @@ static Directory* __find_last_sub_directory(Directory* wd) {
   return __find_directory(wd->sub_dirs, NULL);
 }
 
-// abstração para __find_last_directory.
+// abstração para __find_last_directory. Busca pelo último diretório na lista 'next'
 static Directory* __find_last_brother_directory(Directory* wd) {
   if(!wd || !wd->next)
     return NULL;
@@ -54,7 +55,7 @@ static Directory* __find_last_brother_directory(Directory* wd) {
 
 /* ----------------------------------------------------------------------------------------- */
 
-
+// Inicializa o diretório root e faz wd apontar para seu endereço
 void init(void) {
   time_t curr_time = time(NULL);
 
@@ -68,14 +69,17 @@ void init(void) {
   wd = &root;
 }
 
+// Retorna uma cópia do diretório root
 Directory get_root_dir(void) {
   return root;
 }
 
+// Retorna referência para o diretório atual (working directory)
 Directory* pwd(void) {
   return wd;
 }
 
+// Aloca espaço na memória para conter uma struct Directory
 Directory* alloc_directory(const char* name) {
   Directory* new_dir = malloc(sizeof(Directory));
 
@@ -96,6 +100,7 @@ Directory* alloc_directory(const char* name) {
   return new_dir;
 }
 
+// Simula um mkdir, ou seja, cria um novo diretório no 'wd' atual
 mkdir_ret mkdir(const char* pathname) {
   if(!pathname)
     return EPATH;
