@@ -60,6 +60,7 @@ void init(void) {
   time_t curr_time = time(NULL);
 
   root.name = "root";
+  root.father = NULL;
   root.next = NULL;
   root.sub_dirs = NULL;
   root.files = NULL;
@@ -94,6 +95,7 @@ Directory* alloc_directory(const char* name) {
 
   new_dir->creation_time = time_now();
   new_dir->files    = NULL;
+  new_dir->father   = wd;   // diretório atual se torna o pai do novo diretório
   new_dir->next     = NULL;
   new_dir->sub_dirs = NULL;
 
