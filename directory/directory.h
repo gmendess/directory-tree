@@ -16,7 +16,7 @@ typedef enum {
   MKDIR_SUCCESS,
   EEXIT, // Erro, diretório já existe
   EPATH  // pathname passado é inválido
-} mkdir_ret;
+} ret_t;
 
 // Inicializa o diretório root e faz wd apontar para seu endereço
 void init(void);
@@ -31,6 +31,6 @@ Directory* pwd(void);
 Directory* alloc_directory(const char* name);
 
 // Simula um mkdir, ou seja, cria um novo diretório no 'wd' atual
-mkdir_ret mkdir(const char* pathname);
+ret_t mkdir(const char* pathname);
 
 #endif // _DIRECTORY_H_

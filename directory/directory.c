@@ -101,7 +101,7 @@ Directory* alloc_directory(const char* name) {
 }
 
 // Simula um mkdir, ou seja, cria um novo diretório no 'wd' atual
-mkdir_ret mkdir(const char* pathname) {
+ret_t mkdir(const char* pathname) {
   if(!pathname)
     return EPATH;
 
