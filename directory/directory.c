@@ -12,6 +12,39 @@ static Directory root;
 // Variável que representa o diretório atual (working directory)
 static Directory* wd;
 
+/* ------------------------------ FUNÇÕES STATIC INTERNAS ---------------------------------- */
+
+// função interna que percorre uma lista encadeada de Directory e retorna o último elemento´.
+// É bom que essa função seja chamada por uma de suas abstrações, pois ela não faz verificação
+// se 'dir' é um ponteiro válido
+static Directory* __find_last_directory(Directory* dir) {
+  while(dir->next)
+    dir = dir->next;
+
+  return dir;
+}
+
+// abstração para __find_last_directory
+static Directory* __find_last_sub_directory(Directory* wd) {
+  if(!wd)
+    return NULL;
+  else if(!wd->sub_dirs)
+    return wd->sub_dirs;
+
+  return __find_last_directory(wd->sub_dirs);
+}
+
+// abstração para __find_last_directory.
+static Directory* __find_last_brother_directory(Directory* wd) {
+  if(!wd || !wd->next)
+    return NULL;
+
+  return __find_last_directory(wd->next);
+}
+
+/* ----------------------------------------------------------------------------------------- */
+
+
 void init(void) {
   time_t curr_time = time(NULL);
 
