@@ -14,32 +14,42 @@ static Directory* wd;
 
 /* ------------------------------ FUNÇÕES STATIC INTERNAS ---------------------------------- */
 
-// função interna que percorre uma lista encadeada de Directory e retorna o último elemento´.
-// É bom que essa função seja chamada por uma de suas abstrações, pois ela não faz verificação
-// se 'dir' é um ponteiro válido
-static Directory* __find_last_directory(Directory* dir) {
-  while(dir->next)
-    dir = dir->next;
+// Função interna que percorre uma lista encadeada de Directory buscando pelo diretório desejado.
+// Obs:
+//   - Não valida se 'dir' é um ponteiro válido.
+//   - Se 'target_name' for NULL, procura pelo ultimo diretório
+static Directory* __find_directory(Directory* dir, const char* target_name) {
+  if(!target_name) {
+    // percorre até o último nó
+    for(; dir->next; dir = dir->next);
+  }
+  else {
+    // busca pelo nó com nome igual 'target_name'
+    while(dir && strcmp(dir->name, target_name) != 0)
+      dir = dir->next;
+  }
 
   return dir;
 }
 
-// abstração para __find_last_directory
+// abstração para __find_directory
 static Directory* __find_last_sub_directory(Directory* wd) {
   if(!wd)
     return NULL;
   else if(!wd->sub_dirs)
     return wd;
 
-  return __find_last_directory(wd->sub_dirs);
+  return __find_directory(wd->sub_dirs, NULL);
 }
 
 // abstração para __find_last_directory.
 static Directory* __find_last_brother_directory(Directory* wd) {
   if(!wd || !wd->next)
     return NULL;
+  else if(!wd->next)
+    return wd;
 
-  return __find_last_directory(wd->next);
+  return __find_directory(wd->next, NULL);
 }
 
 /* ----------------------------------------------------------------------------------------- */
