@@ -19,15 +19,21 @@ static Directory* wd;
 //   - Não valida se 'dir' é um ponteiro válido.
 //   - Se 'target_name' for NULL, procura pelo ultimo diretório
 //   - Retorna NULL apenas caso não exista nenhum nó com nome 'target_name'
-static Directory* __find_directory(Directory* dir, const char* target_name) {
+//   - Salva em preview o diretório anterior do diretório desejado
+Directory* __find_directory(Directory* dir, const char* target_name, Directory** preview) {
   if(!target_name) {
     // percorre até o último nó
-    for(; dir->next; dir = dir->next);
+    while(dir->next) {
+      if(preview) *preview = dir;
+      dir = dir->next;
+    }
   }
   else {
     // busca pelo nó com nome igual 'target_name'
-    while(dir && strcmp(dir->name, target_name) != 0)
+    while(dir && strcmp(dir->name, target_name) != 0) {
+      if(preview) *preview = dir;
       dir = dir->next;
+    }
   }
 
   return dir;
@@ -40,7 +46,7 @@ static Directory* __find_last_sub_directory(Directory* wd) {
   else if(!wd->sub_dirs)
     return wd;
 
-  return __find_directory(wd->sub_dirs, NULL);
+  return __find_directory(wd->sub_dirs, NULL, NULL);
 }
 
 // abstração para __find_last_directory. Busca pelo último diretório na lista 'next'
@@ -50,7 +56,7 @@ static Directory* __find_last_brother_directory(Directory* wd) {
   else if(!wd->next)
     return wd;
 
-  return __find_directory(wd->next, NULL);
+  return __find_directory(wd->next, NULL, NULL);
 }
 
 /* ----------------------------------------------------------------------------------------- */
@@ -151,7 +157,7 @@ ret_t cd(const char* pathname) {
     }
     else {
       // busca pelo diretório em 'wd'
-      target_dir = __find_directory(wd->sub_dirs, token);
+      target_dir = __find_directory(wd->sub_dirs, token, NULL);
 
       // verifica se o diretório foi encontrado
       if(target_dir)
