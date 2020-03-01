@@ -13,7 +13,7 @@ int main() {
 
   char command[50];
   while(1) {
-    printf("%s> ", wd->name);
+    printf("%s> ", wd->fullpath);
     scanf("%[^\n]", command);
     getchar();
     token = strtok(command, " ");
