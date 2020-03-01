@@ -80,7 +80,7 @@ Directory* pwd(void) {
   return wd;
 }
 
-// Aloca espaço na memória para conter uma struct Directory
+// Aloca espaço na memória para conter uma struct Directory e inicializa seus membros
 Directory* alloc_directory(const char* name) {
   Directory* new_dir = malloc(sizeof(Directory));
 
@@ -89,20 +89,31 @@ Directory* alloc_directory(const char* name) {
     return NULL;
   }
 
-  size_t size = strlen(name) + 1; // tamanho da string + '\0'
-  new_dir->name = malloc(size);
-  memcpy(new_dir->name, name, size);
+  size_t size = strlen(name); // tamanho do nome do diretório
+  new_dir->name = make_ptr_copy(name, size + 1); // copia parâmetro 'name' para 'new_dir->name'
+
+  // tamanho do fullpath do diretório pai
+  size_t wd_fullpath_size = strlen(wd->fullpath);
+
+  // tamanho do fullpath do diretório pai + '/' + tamanho do nome do diretório filho + '\0'
+  size_t new_fullpath_size = wd_fullpath_size + 1 + size + 1;
+  new_dir->fullpath = calloc(new_fullpath_size, 1); // aloca memória suficiente para caber o fullpath do diretório filho
+
+  // faz a montagem do fullpath do diretório filho
+  memcpy(new_dir->fullpath, wd->fullpath, wd_fullpath_size); // inicia a montagem; fullpath do filho herda o fullpath do pai
+  new_dir->fullpath[wd_fullpath_size] = '/'; // adiciona barra divisora de diretórios 
+  strcat(new_dir->fullpath + wd_fullpath_size + 1, name); // concatena ao fullpath o nome do diretório filho
 
   new_dir->creation_time = time_now();
   new_dir->files    = NULL;
-  new_dir->father   = wd;   // diretório atual se torna o pai do novo diretório
+  new_dir->father   = wd;   // diretório atual se torna o pai desse novo diretório
   new_dir->next     = NULL;
   new_dir->sub_dirs = NULL;
 
   return new_dir;
 }
 
-// Simula um mkdir, ou seja, cria um novo diretório no 'wd' atual
+// Simula um mkdir, ou seja, adiciona um novo diretório no 'wd' atual
 ret_t mkdir(const char* pathname) {
   if(!pathname)
     return EPATH;
