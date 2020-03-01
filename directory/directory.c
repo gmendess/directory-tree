@@ -132,19 +132,27 @@ ret_t cd(const char* pathname) {
   // percorre cada diretório do path até chegar no desejado. Se um dos diretórios não existir, retorna EPATH, pois o caminho é inválido
   char* token = strtok(path_copy, "/");
   while(token) {
-    // busca pelo diretório em 'wd'
-    target_dir = __find_directory(wd->sub_dirs, token);
-
-    // verifica se o diretório foi encontrado
-    if(target_dir)
-      wd = target_dir; // se sim, entra nesse diretório
+    // verifica se é um comando para voltar um diretório
+    if(strcmp(token, "..") == 0) {
+      // verifica se o diretório atual é diferente de root. Se for, n faz nada, porque não há nada antes de root
+      if(wd != &root)
+        wd = wd->father; // diretório atual passa a ser seu diretório pai
+    }
     else {
-      fprintf(stderr, "O caminho \"%s\" não existe!\n", pathname);
-      wd = save_wd; // se o caminho for inválido, wd retorna para o diretório inicial
-      return EPATH;
+      // busca pelo diretório em 'wd'
+      target_dir = __find_directory(wd->sub_dirs, token);
+
+      // verifica se o diretório foi encontrado
+      if(target_dir)
+        wd = target_dir; // se sim, entra nesse diretório
+      else {
+        fprintf(stderr, "O caminho \"%s\" nao existe!\n", pathname);
+        wd = save_wd; // se o caminho for inválido, wd retorna para o diretório inicial
+        return EPATH;
+      }
     }
 
-    token = strtok(NULL, "/");
+    token = strtok(NULL, "/"); // pega o nome do próximo diretório do path
   }
 
   return SUCCESS;
