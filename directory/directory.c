@@ -10,7 +10,7 @@
 static Directory root;
 
 // Variável que armazena referência para o diretório atual (working directory)
-Directory* wd;
+static Directory* wd;
 
 /* ------------------------------ FUNÇÕES STATIC INTERNAS ---------------------------------- */
 
