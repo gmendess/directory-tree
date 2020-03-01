@@ -57,14 +57,14 @@ static Directory* __find_last_brother_directory(Directory* wd) {
 
 // Inicializa o diretório root e faz wd apontar para seu endereço
 void init(void) {
-  time_t curr_time = time(NULL);
 
+  root.fullpath = "root";
   root.name = "root";
   root.father = NULL;
   root.next = NULL;
   root.sub_dirs = NULL;
   root.files = NULL;
-  root.creation_time = localtime(&curr_time);
+  root.creation_time = time_now();
 
   // inicialmente pwd aponta para o diretório raiz
   wd = &root;
@@ -118,7 +118,7 @@ ret_t mkdir(const char* pathname) {
   return SUCCESS;
 }
 
-// Muda o diretório atual para o passado via parâmetro
+// Muda o diretório atual para um passado via parâmetro
 ret_t cd(const char* pathname) {
   if(!pathname)
     return EPATH;
