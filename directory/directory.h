@@ -6,6 +6,7 @@
 
 typedef struct directory {
   char* name;
+  char* fullpath;             // caminho completo do diretório
   struct directory* father;   // diretório pai
   struct directory* next;     // diretórios irmãos
   struct directory* sub_dirs; // diretórios filhos
