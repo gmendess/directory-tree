@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include "file/file.h"
 #include "directory/directory.h"
@@ -7,29 +8,28 @@
 int main() {
 
   init();
-  
-  mkdir("teste");
-  cd("teste");
-  mkdir("teste2");
-  cd("teste2");
-  mkdir("teste3");
-  cd("teste3");
-  mkdir("teste4");
+  Directory* wd = pwd();
+  char* token;
 
-  Directory root = get_root_dir();
+  char command[50];
+  while(1) {
+    printf("%s> ", wd->name);
+    scanf("%[^\n]", command);
+    getchar();
+    token = strtok(command, " ");
+    if(strcmp(token, "cd") == 0) {
+      token = strtok(NULL, " ");
+      cd(token);
+    }
+    else if(strcmp(token, "mkdir") == 0){
+      token = strtok(NULL, " ");
+      mkdir(token);
+    }
+    else
+      printf("Comando \"%s\" nao encontrado!\n", token);
 
-  printf(
-    "%s\n" \
-    " `- %s\n" \
-    "     `- %s\n" \
-    "         `- %s\n" \
-    "             `- %s\n",
-    root.name,
-    root.sub_dirs->name,
-    root.sub_dirs->sub_dirs->name,
-    root.sub_dirs->sub_dirs->sub_dirs->name,
-    root.sub_dirs->sub_dirs->sub_dirs->sub_dirs->name
-  );
+    wd = pwd();
+  }
 
   return EXIT_SUCCESS;
 }
