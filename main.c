@@ -23,7 +23,8 @@ int main() {
     }
     else if(strcmp(token, "mkdir") == 0){
       token = strtok(NULL, " ");
-      mkdir(token);
+      if(mkdir(token) == EEXIST)
+        puts("Erro! Caminho passado já existe!");
     }
     else
       printf("Comando \"%s\" nao encontrado!\n", token);
