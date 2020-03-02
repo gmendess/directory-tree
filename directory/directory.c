@@ -21,6 +21,9 @@ static Directory* wd;
 //   - Retorna NULL apenas caso não exista nenhum nó com nome 'target_name'
 //   - Salva em preview o diretório anterior do diretório desejado
 Directory* __find_directory(Directory* dir, const char* target_name, Directory** preview) {
+  if(preview)
+    *preview = dir;
+
   if(!target_name) {
     // percorre até o último nó
     while(dir->next) {
@@ -124,15 +127,40 @@ ret_t mkdir(const char* pathname) {
   if(!pathname)
     return EPATH;
 
-  Directory* new_dir = alloc_directory(pathname);
-  Directory* last = __find_last_sub_directory(wd);
+  Directory* new_dir = NULL;
 
-  if(last == wd)
-    wd->sub_dirs = new_dir;
-  else
-    last->next = new_dir;
+  // cria cópia de pathname para ser usada na função strtok
+  char* path_copy = make_ptr_copy(pathname, strlen(pathname) + 1);
+  
+  // percorre cada diretório do path.
+  char* token = strtok(path_copy, "/");
+  while(token) {
+    // verifica se o diretório de trabalho possui diretório filhos
+    if(wd->sub_dirs) {
+      Directory* prior_last = NULL;
 
-  return SUCCESS;
+      // tenta buscar pelo diretório contido em 'token'
+      Directory* target_dir = __find_directory(wd->sub_dirs, token, &prior_last);
+      if(target_dir) // se o diretório foi encontrado
+        wd = target_dir; // entra no diretório
+      else { // diretório não existe, logo deve ser criado
+        new_dir = alloc_directory(token);
+        prior_last->next = new_dir; // último filho do diretório de trabalho aponta para o novo diretório
+        wd = new_dir; // entra nesse novo diretório
+      }
+    }
+    else { // se o diretório de trabalho não tiver filhos, significa que já devo criar um diretório novo
+      new_dir = alloc_directory(token);
+      wd->sub_dirs = new_dir; // adiciona primeiro filho ao diretório de trabalho
+      wd = new_dir; // entra no diretório filho recém criado.
+    }
+
+    token = strtok(NULL, "/"); // pega o nome do próximo diretório do path
+  }
+
+  // se new_dir for um ponteiro válido, significa que um diretório foi criado. Caso contrário,
+  // o caminho passado à mkdir já existe, logo, retorna o código de erro EEXIST.
+  return new_dir ? SUCCESS : EEXIST;
 }
 
 // Muda o diretório atual para um passado via parâmetro
