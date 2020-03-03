@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include "../directory/directory.h"
 
 #define FREE_AND_NULL(pointer) \
 do {                           \
@@ -12,5 +13,8 @@ do {                           \
 }while(0)
 
 struct tm time_now(void);
+
+// imprime na tela a árvore de diretórios a partir do diretório de trabalho
+void tree(void);
 
 #endif // _UTILS_H_
