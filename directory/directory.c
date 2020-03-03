@@ -127,6 +127,7 @@ ret_t mkdir(const char* pathname) {
   if(!pathname)
     return EPATH;
 
+  Directory* save_wd = wd;
   Directory* new_dir = NULL;
 
   // cria cópia de pathname para ser usada na função strtok
@@ -158,6 +159,7 @@ ret_t mkdir(const char* pathname) {
     token = strtok(NULL, "/"); // pega o nome do próximo diretório do path
   }
 
+  wd = save_wd;
   // se new_dir for um ponteiro válido, significa que um diretório foi criado. Caso contrário,
   // o caminho passado à mkdir já existe, logo, retorna o código de erro EEXIST.
   return new_dir ? SUCCESS : EEXIST;
