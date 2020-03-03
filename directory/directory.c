@@ -185,6 +185,8 @@ ret_t cd(const char* pathname) {
       if(wd != &root)
         wd = wd->father; // diretório atual passa a ser seu diretório pai
     }
+    else if(strcmp(token, "~") == 0) // se for um 'cd ~'
+      wd = &root; // volta ao diretório raiz
     else {
       // busca pelo diretório em 'wd'
       target_dir = __find_directory(wd->sub_dirs, token, NULL);
