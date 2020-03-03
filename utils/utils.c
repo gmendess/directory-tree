@@ -10,10 +10,3 @@ struct tm* time_now(void) {
 
   return _time_now;
 }
-
-void* make_ptr_copy(const void* source, size_t bytes) {
-  void* dest = malloc(bytes);
-  memcpy(dest, source, bytes);
-
-  return dest;
-}

@@ -99,7 +99,7 @@ Directory* alloc_directory(const char* name) {
   }
 
   size_t size = strlen(name); // tamanho do nome do diretório
-  new_dir->name = make_ptr_copy(name, size + 1); // copia parâmetro 'name' para 'new_dir->name'
+  new_dir->name = strdup(name); // copia parâmetro 'name' para 'new_dir->name'
 
   // tamanho do fullpath do diretório pai
   size_t wd_fullpath_size = strlen(wd->fullpath);
@@ -131,7 +131,7 @@ ret_t mkdir(const char* pathname) {
   Directory* new_dir = NULL;
 
   // cria cópia de pathname para ser usada na função strtok
-  char* path_copy = make_ptr_copy(pathname, strlen(pathname) + 1);
+  char* path_copy = strdup(pathname);
   
   // percorre cada diretório do path.
   char* token = strtok(path_copy, "/");
@@ -174,7 +174,7 @@ ret_t cd(const char* pathname) {
   Directory* target_dir = NULL;
 
   // cria uma copia da string contida em pathname
-  char* path_copy = make_ptr_copy(pathname, strlen(pathname) + 1);
+  char* path_copy = strdup(pathname);
 
   // percorre cada diretório do path até chegar no desejado. Se um dos diretórios não existir, retorna EPATH, pois o caminho é inválido
   char* token = strtok(path_copy, "/");
