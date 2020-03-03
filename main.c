@@ -33,6 +33,8 @@ int main() {
       if(rmdir(token) == EPATH)
         puts("Erro! Caminho passado nao existe!");
     }
+    else if(strcmp(token, "tree") == 0)
+      tree();
     else
       printf("Comando \"%s\" nao encontrado!\n", token);
 
