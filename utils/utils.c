@@ -19,7 +19,15 @@ static void __tree(Directory* wd) {
   // representa a identação do diretório para facilitar visualização
   static size_t indent = 0;
 
-  printf("%*s%s\n", indent, "", wd->name);
+  if(indent > 0) {
+    for(int x = 1; x < indent; x++) {
+      if(x % 2 == 0)
+        putchar('|');
+      putchar(' ');
+    }
+    printf(" `-- ");
+  }
+  printf("%s/\n", wd->name);
   Directory* aux = wd->sub_dirs;
   while(aux) {
     indent += 2;
