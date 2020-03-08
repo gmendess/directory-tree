@@ -11,6 +11,6 @@ do {                           \
   pointer = NULL;              \
 }while(0)
 
-struct tm* time_now(void);
+struct tm time_now(void);
 
 #endif // _UTILS_H_
