@@ -214,3 +214,38 @@ ret_t cd(const char* pathname) {
 
   return SUCCESS;
 }
+
+ret_t rmdir(const char* pathname) {
+  if(!pathname)
+    return EPATH;
+
+  // Salva o working directory atual
+  Directory* save_wd = wd;
+
+  // Entra no último diretório do path
+  if(cd(pathname) == EPATH)
+    return EPATH; // se o path for inválido, retorna EPATH
+
+  // Caso seja possível acessar o path, o diretório apontado por wd mudará (devido ao cd).
+
+  // Directory auxiliar que aponta para o diretório que será removido
+  Directory* aux = wd;
+
+  // se wd->sub_dirs for diferente de NULL, significa que esse diretório possui filhos, dessa forma, é perguntado
+  // se o usuário deseja ou não fazer uma exclusão recursiva (excluir todo o conteúdo do diretório, incluindo os
+  // subdiretórios de seus diretórios filhos).
+  if(wd->sub_dirs) {
+    printf("O diretório %s não está vazio, deseja realizar uma exclusão recursiva (s/n)? Isso deletará todo o conteúdo existente. ");
+    char response = getchar();
+    if(response != 's' || response != 'S') {
+      printf("rmdir cancelado!\n");
+      return CANCEL; // se a resposta for diferente de 's', a operação de excluir o diretório é cancelada
+    }
+    wd = wd->next;
+    free(aux);
+  }
+  else {
+    wd->preview->next = wd->next;
+  }
+
+}
