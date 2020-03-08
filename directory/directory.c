@@ -44,7 +44,6 @@ static Directory* __find_directory(Directory* dir, const char* target_name, Dire
 
 // Zera o conteúdo de um diretório, liberando memória dos membros alocados dinamicamente e zerando ponteiros
 static void __clean_up(Directory* dir) {
-  FREE_AND_NULL(dir->creation_time);
   FREE_AND_NULL(dir->fullpath);
   FREE_AND_NULL(dir->name);
   dir->father   = NULL;
