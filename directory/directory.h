@@ -17,6 +17,7 @@ typedef struct directory {
 
 typedef enum {
   SUCCESS,
+  CANCEL,  // Operação cancelada
   EEXIST,  // Erro, diretório já existe
   ENEXIST, // Erro, diretório não existe
   EPATH    // Erro, pathname passado é inválido
@@ -39,5 +40,8 @@ ret_t mkdir(const char* pathname);
 
 // Muda o diretório atual para o passado via parâmetro
 ret_t cd(const char* pathname);
+
+// Remove os diretório do caminho passado. Se o diretório não estiver vazio, pergunta se deve remover os outros elementos
+ret_t rmdir(const char* pathname);
 
 #endif // _DIRECTORY_H_
