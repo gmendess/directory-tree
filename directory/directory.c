@@ -54,16 +54,18 @@ static void __clean_up(Directory* dir) {
 }
 
 // Zera o conteúdo de um diretório de forma recursiva, ou seja, entra em seus subdiretórios, limpando-os.
-static void __clean_up_all(Directory* dir, int clean_next_brothers) {
+// Após zerar o conteúdo, a memória apontada por 'dir' é liberada
+static void __clean_and_free_all(Directory* dir, int clean_next_brothers) {
   if(dir == NULL)
     return;
 
   // se a flag clean_next_brothers estiver configurada, os diretórios irmãos posteriores também serão limpos
   if(clean_next_brothers)
-    __clean_up_all(dir->next, 1);
+    __clean_and_free_all(dir->next, 1);
 
-  __clean_up_all(dir->sub_dirs, 1);
+  __clean_and_free_all(dir->sub_dirs, 1);
   __clean_up(dir);
+  free(dir);
 }
 
 /* ----------------------------------------------------------------------------------------- */
