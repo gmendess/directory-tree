@@ -42,26 +42,6 @@ Directory* __find_directory(Directory* dir, const char* target_name, Directory**
   return dir;
 }
 
-// abstração para __find_directory. Busca pelo último diretório na lista 'sub_dirs'
-static Directory* __find_last_sub_directory(Directory* wd) {
-  if(!wd)
-    return NULL;
-  else if(!wd->sub_dirs)
-    return wd;
-
-  return __find_directory(wd->sub_dirs, NULL, NULL);
-}
-
-// abstração para __find_last_directory. Busca pelo último diretório na lista 'next'
-static Directory* __find_last_brother_directory(Directory* wd) {
-  if(!wd || !wd->next)
-    return NULL;
-  else if(!wd->next)
-    return wd;
-
-  return __find_directory(wd->next, NULL, NULL);
-}
-
 /* ----------------------------------------------------------------------------------------- */
 
 // Inicializa o diretório root e faz wd apontar para seu endereço
