@@ -21,7 +21,7 @@ int main() {
       token = strtok(NULL, " ");
       cd(token);
     }
-    else if(strcmp(token, "mkdir") == 0){
+    else if(strcmp(token, "mkdir") == 0) {
       token = strtok(NULL, " ");
       if(mkdir(token) == EEXIST)
         puts("Erro! Caminho passado já existe!");
