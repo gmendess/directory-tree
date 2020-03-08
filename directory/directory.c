@@ -229,6 +229,10 @@ ret_t rmdir(const char* pathname) {
 
   // Caso seja possível acessar o path, o diretório apontado por wd mudará (devido ao cd).
 
+  // Não deve ser possível remover o diretório root!
+  if(wd == &root)
+    return EROOT;
+
   // Directory auxiliar que aponta para o diretório que será removido
   Directory* aux = wd;
 
