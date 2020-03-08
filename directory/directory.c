@@ -169,6 +169,8 @@ ret_t mkdir(const char* pathname) {
   }
 
   wd = save_wd;
+
+  free(path_copy);
   // se new_dir for um ponteiro válido, significa que um diretório foi criado. Caso contrário,
   // o caminho passado à mkdir já existe, logo, retorna o código de erro EEXIST.
   return new_dir ? SUCCESS : EEXIST;
@@ -213,6 +215,7 @@ ret_t cd(const char* pathname) {
     token = strtok(NULL, "/"); // pega o nome do próximo diretório do path
   }
 
+  free(path_copy);
   return SUCCESS;
 }
 
