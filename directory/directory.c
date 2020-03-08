@@ -235,18 +235,28 @@ ret_t rmdir(const char* pathname) {
   // se wd->sub_dirs for diferente de NULL, significa que esse diretório possui filhos, dessa forma, é perguntado
   // se o usuário deseja ou não fazer uma exclusão recursiva (excluir todo o conteúdo do diretório, incluindo os
   // subdiretórios de seus diretórios filhos).
-  if(wd->sub_dirs) {
-    printf("O diretório %s não está vazio, deseja realizar uma exclusão recursiva (s/n)? Isso deletará todo o conteúdo existente. ");
-    char response = getchar();
-    if(response != 's' || response != 'S') {
-      printf("rmdir cancelado!\n");
-      return CANCEL; // se a resposta for diferente de 's', a operação de excluir o diretório é cancelada
+  if(wd->sub_dirs != NULL) {
+    printf("O diretorio \"%s\" nao esta vazio, deseja realizar uma exclusao recursiva (S/n)? ", wd->name);
+    char response = 0;
+    scanf("%c", &response);
+    getchar();
+    if(response != 'S') {
+      puts("rmdir cancelado!");
+      wd = save_wd;
+      return CANCEL; // se a resposta for diferente de 'S', a operação de excluir o diretório é cancelada
     }
-    wd = wd->next;
-    free(aux);
-  }
-  else {
-    wd->preview->next = wd->next;
   }
 
+  // Se o diretório irmão anterior do diretório a ser excluído for igual a NULL, significa que ele é o primeiro filho de seu
+  // diretório pai. Com isso, o diretório pai deve apontar para seu segundo filho
+  if(wd->preview == NULL)
+    wd->father->sub_dirs = wd->next;
+  else
+    wd->preview->next = wd->next; // se não, o irmão anterior aponta para o irmão posterior do diretório a ser excluido
+
+  __clean_and_free_all(aux, 0); // limpa o conteúdo do diretório, liberando memória de seus membros
+
+  wd = save_wd;
+
+  return SUCCESS;
 }
