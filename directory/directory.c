@@ -20,7 +20,7 @@ static Directory* wd;
 //   - Se 'target_name' for NULL, procura pelo ultimo diretório
 //   - Retorna NULL apenas caso não exista nenhum nó com nome 'target_name'
 //   - Salva em preview o diretório anterior do diretório desejado
-Directory* __find_directory(Directory* dir, const char* target_name, Directory** preview) {
+static Directory* __find_directory(Directory* dir, const char* target_name, Directory** preview) {
   if(preview)
     *preview = dir;
 
@@ -40,6 +40,31 @@ Directory* __find_directory(Directory* dir, const char* target_name, Directory**
   }
 
   return dir;
+}
+
+// Zera o conteúdo de um diretório, liberando memória dos membros alocados dinamicamente e zerando ponteiros
+static void __clean_up(Directory* dir) {
+  FREE_AND_NULL(dir->creation_time);
+  FREE_AND_NULL(dir->fullpath);
+  FREE_AND_NULL(dir->name);
+  dir->father   = NULL;
+  dir->files    = NULL;
+  dir->next     = NULL;
+  dir->preview  = NULL;
+  dir->sub_dirs = NULL;
+}
+
+// Zera o conteúdo de um diretório de forma recursiva, ou seja, entra em seus subdiretórios, limpando-os.
+static void __clean_up_all(Directory* dir, int clean_next_brothers) {
+  if(dir == NULL)
+    return;
+
+  // se a flag clean_next_brothers estiver configurada, os diretórios irmãos posteriores também serão limpos
+  if(clean_next_brothers)
+    __clean_up_all(dir->next, 1);
+
+  __clean_up_all(dir->sub_dirs, 1);
+  __clean_up(dir);
 }
 
 /* ----------------------------------------------------------------------------------------- */
@@ -91,7 +116,7 @@ Directory* alloc_directory(const char* name) {
 
   // faz a montagem do fullpath do diretório filho
   memcpy(new_dir->fullpath, wd->fullpath, wd_fullpath_size); // inicia a montagem; fullpath do filho herda o fullpath do pai
-  new_dir->fullpath[wd_fullpath_size] = '/'; // adiciona barra divisora de diretórios 
+  new_dir->fullpath[wd_fullpath_size] = '/'; // adiciona barra divisora de diretórios
   strcat(new_dir->fullpath + wd_fullpath_size + 1, name); // concatena ao fullpath o nome do diretório filho
 
   new_dir->creation_time = time_now();
