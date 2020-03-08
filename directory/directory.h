@@ -12,7 +12,7 @@ typedef struct directory {
   struct directory* next;     // próximo diretório irmão
   struct directory* sub_dirs; // diretórios filhos
   struct file* files;         // arquivos presentes no diretório
-  struct tm* creation_time;   // data de criação do diretório
+  struct tm creation_time;    // data de criação do diretório
 } Directory;
 
 typedef enum {
