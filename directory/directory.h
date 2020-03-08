@@ -20,7 +20,8 @@ typedef enum {
   CANCEL,  // Operação cancelada
   EEXIST,  // Erro, diretório já existe
   ENEXIST, // Erro, diretório não existe
-  EPATH    // Erro, pathname passado é inválido
+  EPATH,   // Erro, pathname passado é inválido
+  EROOT    // Erro, tentativa de realizar uma operação inválida com diretório root
 } ret_t;
 
 // Inicializa o diretório root e faz wd apontar para seu endereço
