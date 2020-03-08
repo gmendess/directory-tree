@@ -8,7 +8,8 @@ typedef struct directory {
   char* name;
   char* fullpath;             // caminho completo do diretório
   struct directory* father;   // diretório pai
-  struct directory* next;     // diretórios irmãos
+  struct directory* preview;  // diretório irmão anterior
+  struct directory* next;     // próximo diretório irmão
   struct directory* sub_dirs; // diretórios filhos
   struct file* files;         // arquivos presentes no diretório
   struct tm* creation_time;   // data de criação do diretório
