@@ -11,12 +11,14 @@ int main() {
   Directory* wd = pwd();
   char* token;
 
-  char command[50];
   while(1) {
+    char command[50] = {0};
     printf("%s> ", wd->fullpath);
     scanf("%[^\n]", command);
     getchar();
     token = strtok(command, " ");
+    if(!token)
+      continue;
     if(strcmp(token, "cd") == 0) {
       token = strtok(NULL, " ");
       cd(token);
@@ -24,7 +26,12 @@ int main() {
     else if(strcmp(token, "mkdir") == 0) {
       token = strtok(NULL, " ");
       if(mkdir(token) == EEXIST)
-        puts("Erro! Caminho passado já existe!");
+        puts("Erro! Caminho passado ja existe!");
+    }
+    else if(strcmp(token, "rmdir") == 0) {
+      token = strtok(NULL, " ");
+      if(rmdir(token) == EPATH)
+        puts("Erro! Caminho passado nao existe!");
     }
     else
       printf("Comando \"%s\" nao encontrado!\n", token);
