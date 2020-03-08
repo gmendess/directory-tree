@@ -50,6 +50,7 @@ void init(void) {
   root.fullpath = "root";
   root.name = "root";
   root.father = NULL;
+  root.preview = NULL;
   root.next = NULL;
   root.sub_dirs = NULL;
   root.files = NULL;
@@ -96,6 +97,7 @@ Directory* alloc_directory(const char* name) {
   new_dir->creation_time = time_now();
   new_dir->files    = NULL;
   new_dir->father   = wd;   // diretório atual se torna o pai desse novo diretório
+  new_dir->preview  = NULL;
   new_dir->next     = NULL;
   new_dir->sub_dirs = NULL;
 
@@ -126,6 +128,7 @@ ret_t mkdir(const char* pathname) {
         wd = target_dir; // entra no diretório
       else { // diretório não existe, logo deve ser criado
         new_dir = alloc_directory(token);
+        new_dir->preview = prior_last;
         prior_last->next = new_dir; // último filho do diretório de trabalho aponta para o novo diretório
         wd = new_dir; // entra nesse novo diretório
       }
