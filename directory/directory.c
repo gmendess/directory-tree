@@ -229,6 +229,11 @@ ret_t rmdir(const char* pathname) {
   // Entra no último diretório do path
   if(cd(pathname) == EPATH)
     return EPATH; // se o path for inválido, retorna EPATH
+  
+  // No final da função o save_wd é usado para retornar ao diretório que chamou o comando rmdir. Isso causava um bug caso tentasse remover o próprio
+  // diretório em que estava, pois ele retornaria para ele mesmo. Dessa forma, se save_wd for igual a wd, save_wd passa a ser o diretório pai
+  if(save_wd == wd)
+    save_wd = wd->father;
 
   // Caso seja possível acessar o path, o diretório apontado por wd mudará (devido ao cd).
 
