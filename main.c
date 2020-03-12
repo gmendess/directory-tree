@@ -8,21 +8,38 @@
 int main() {
 
   init();
+  Directory* wd = pwd();
+  char* token;
 
-  mkdir("teste");
-  mkdir("teste/ola");
-  mkdir("hello");
-  mkdir("teste/ola/123");
-  mkdir("teste/ola/321");
-  mkdir("teste/ola/999");
-  mkdir("teste/hey");
-  mkdir("hello/seila");
-  mkdir("hello/seila/teste/oi");
-  mkdir("hello/seila/teste/123");
-  mkdir("ish");
-  mkdir("ish/vish");
-  mkdir("ish/oxe");
-  tree();
+  while(1) {
+    char command[50] = {0};
+    printf("%s> ", wd->fullpath);
+    scanf("%[^\n]", command);
+    getchar();
+    token = strtok(command, " ");
+    if(!token)
+      continue;
+    if(strcmp(token, "cd") == 0) {
+      token = strtok(NULL, " ");
+      cd(token);
+    }
+    else if(strcmp(token, "mkdir") == 0) {
+      token = strtok(NULL, " ");
+      if(mkdir(token) == EEXIST)
+        puts("Erro! Caminho passado ja existe!");
+    }
+    else if(strcmp(token, "rmdir") == 0) {
+      token = strtok(NULL, " ");
+      if(rmdir(token) == EPATH)
+        puts("Erro! Caminho passado nao existe!");
+    }
+    else if(strcmp(token, "tree") == 0)
+      tree();
+    else
+      printf("Comando \"%s\" nao encontrado!\n", token);
+
+    wd = pwd();
+  }
 
   return EXIT_SUCCESS;
 }
