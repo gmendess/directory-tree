@@ -12,5 +12,7 @@ typedef struct file {
   struct tm creation_time; // data de criação do arquivo
 } File;
 
+// Aloca memória para conter uma struct file, inicializa seus membros e retorna referência para o arquivo
+File* alloc_file(const char* name);
 
 #endif // _FILE_H_
