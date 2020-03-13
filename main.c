@@ -14,10 +14,12 @@ int main() {
 
   cd("teste/oi");
 
-  File* file = alloc_file("meu_arquivo.txt");
-  printf("%s\n", file->name);
-  printf("%s\n", file->fullpath);
-  printf("%s\n", asctime(&file->creation_time));
+  touch("teste.txt");
+  touch("hello.txt");
+
+  Directory* wd = pwd();
+  printf("%s/%s\n", wd->fullpath, wd->files->name);
+  printf("%s/%s\n", wd->fullpath, wd->files->next->name);
 
   return EXIT_SUCCESS;
 }
