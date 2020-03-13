@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include "../directory/directory.h"
+#include "../utils/utils.h"
 
 typedef struct file {
   char* name;
@@ -14,5 +15,8 @@ typedef struct file {
 
 // Aloca memória para conter uma struct file, inicializa seus membros e retorna referência para o arquivo
 File* alloc_file(const char* name);
+
+// Cria um arquivo vazio no diretório de trabalho
+ret_t touch(const char* name);
 
 #endif // _FILE_H_

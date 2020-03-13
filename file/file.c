@@ -25,3 +25,17 @@ File* alloc_file(const char* name) {
 
   return new_file;
 }
+
+ret_t touch(const char* name) {
+  if(!name)
+    return ENAME;
+
+  // adquirindo referência para o diretório de trabalho
+  Directory* wd = pwd();
+
+  File* new_file = alloc_file(name);
+  new_file->next = wd->files;
+  wd->files = new_file;
+
+  return SUCCESS;
+}
