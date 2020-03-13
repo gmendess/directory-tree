@@ -1,16 +1,23 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <time.h>
-#include "../directory/directory.h"
 
 #define FREE_AND_NULL(pointer) \
 do {                           \
   free(pointer);               \
   pointer = NULL;              \
 }while(0)
+
+typedef enum {
+  SUCCESS,
+  CANCEL,  // Operação cancelada
+  EEXIST,  // Erro, diretório já existe
+  ENEXIST, // Erro, diretório não existe
+  EPATH,   // Erro, pathname passado é inválido
+  ENAME,   // Erro, nome de arquivo inválido
+  EROOT    // Erro, tentativa de realizar uma operação inválida com diretório root
+} ret_t;
 
 struct tm time_now(void);
 
