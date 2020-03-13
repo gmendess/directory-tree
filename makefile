@@ -16,7 +16,7 @@ main.o: main.c $(DIRECTORY).h $(FILE).h $(UTILS).h
 directory.o: $(DIRECTORY).c $(DIRECTORY).h $(UTILS).h
 	$(CC) $(CC_FLAGS) $(DIRECTORY).c -o directory.o
 
-file.o: $(FILE).c $(FILE).h
+file.o: $(FILE).c $(FILE).h $(UTILS).h
 	$(CC) $(CC_FLAGS) $(FILE).c -o file.o
 
 utils.o: $(UTILS).c $(UTILS).h
