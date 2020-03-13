@@ -6,7 +6,9 @@
 
 typedef struct file {
   char* name;
-  struct file* next; // arquivos irmãos, presentes no mesmo diretório
+  char* fullpath;          // caminho completo do arquivo
+  struct file* preview;    // arquivo irmão anterior (presente no mesmo diretório)
+  struct file* next;       // próximo arquivo irmão (presente no mesmo diretório)
   struct tm creation_time; // data de criação do arquivo
 } File;
 
