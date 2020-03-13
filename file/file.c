@@ -10,7 +10,7 @@ File* alloc_file(const char* name) {
   Directory* wd = pwd(); // adquirindo referência para o diretório de trabalho
 
   // alocando memória para struct file
-  File* new_file = (File*) malloc(sizeof(File));
+  File* new_file = malloc(sizeof(File));
   if(!new_file) {
     fprintf(stderr, "Falha ao alocar memória para criação do arquivo!\n");
     return NULL;
