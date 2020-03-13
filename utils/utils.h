@@ -17,4 +17,7 @@ struct tm time_now(void);
 // imprime na tela a árvore de diretórios a partir do diretório de trabalho
 void tree(void);
 
+// cria o fullpath de diretórios e arquivos
+char* make_fullpath(const char* wd_fullpath, const char* name);
+
 #endif // _UTILS_H_
