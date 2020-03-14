@@ -119,7 +119,7 @@ ret_t mkdir(const char* pathname) {
       Directory* prior_last = NULL;
 
       // tenta buscar pelo diretório contido em 'token'
-      Directory* target_dir = __find(wd->sub_dirs, token, &prior_last);
+      Directory* target_dir = __find(wd->sub_dirs, token, (void*) &prior_last);
       if(target_dir) // se o diretório foi encontrado
         wd = target_dir; // entra no diretório
       else { // diretório não existe, logo deve ser criado
