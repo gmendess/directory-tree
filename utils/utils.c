@@ -5,6 +5,30 @@
 #include "utils.h"
 #include "../directory/directory.h"
 
+void* __find(void* _generic, const char* target_name, void** preview) {
+  Generic* generic = _generic;
+
+  if(preview)
+    *preview = generic;
+
+  if(!target_name) {
+    // percorre até o último nó
+    while(generic->next) {
+      if(preview) *preview = generic;
+      generic = generic->next;
+    }
+  }
+  else {
+    // busca pelo nó com nome igual 'target_name'
+    while(generic && strcmp(generic->name, target_name) != 0) {
+      if(preview) *preview = generic;
+      generic = generic->next;
+    }
+  }
+
+  return generic;
+}
+
 struct tm time_now(void) {
   time_t t = time(NULL);
   struct tm* _time_now = localtime(&t);
