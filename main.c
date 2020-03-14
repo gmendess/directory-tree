@@ -1,25 +1,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "file/file.h"
-#include "directory/directory.h"
-#include "utils/utils.h"
+#include "file/file.c"
+#include "directory/directory.c"
+#include "utils/utils.c"
 
 int main() {
 
   init();
+  Directory* wd = pwd();
+  char* token;
 
   mkdir("teste");
-  mkdir("teste/oi");
-
-  cd("teste/oi");
-
-  touch("teste.txt");
-  touch("hello.txt");
-
-  Directory* wd = pwd();
-  printf("%s/%s\n", wd->fullpath, wd->files->name);
-  printf("%s/%s\n", wd->fullpath, wd->files->next->name);
+  mkdir("teste/ola");
+  cd("teste/ola");
 
   return EXIT_SUCCESS;
 }
