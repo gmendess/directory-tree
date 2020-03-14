@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "file/file.c"
-#include "directory/directory.c"
-#include "utils/utils.c"
+#include "file/file.h"
+#include "directory/directory.h"
+#include "utils/utils.h"
 
 int main() {
 
