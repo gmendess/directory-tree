@@ -12,36 +12,6 @@ static Directory root;
 // Variável que armazena referência para o diretório atual (working directory)
 static Directory* wd;
 
-/* ------------------------------ FUNÇÕES STATIC INTERNAS ---------------------------------- */
-
-// Função interna que percorre uma lista encadeada de Directory buscando pelo diretório desejado.
-// Obs:
-//   - Não valida se 'dir' é um ponteiro válido.
-//   - Se 'target_name' for NULL, procura pelo ultimo diretório
-//   - Retorna NULL apenas caso não exista nenhum nó com nome 'target_name'
-//   - Salva em preview o diretório anterior do diretório desejado
-static Directory* __find_directory(Directory* dir, const char* target_name, Directory** preview) {
-  if(preview)
-    *preview = dir;
-
-  if(!target_name) {
-    // percorre até o último nó
-    while(dir->next) {
-      if(preview) *preview = dir;
-      dir = dir->next;
-    }
-  }
-  else {
-    // busca pelo nó com nome igual 'target_name'
-    while(dir && strcmp(dir->name, target_name) != 0) {
-      if(preview) *preview = dir;
-      dir = dir->next;
-    }
-  }
-
-  return dir;
-}
-
 // Zera o conteúdo de um diretório, liberando memória dos membros alocados dinamicamente e zerando ponteiros
 static void __clean_up(Directory* dir) {
   FREE_AND_NULL(dir->fullpath);
@@ -149,7 +119,7 @@ ret_t mkdir(const char* pathname) {
       Directory* prior_last = NULL;
 
       // tenta buscar pelo diretório contido em 'token'
-      Directory* target_dir = __find_directory(wd->sub_dirs, token, &prior_last);
+      Directory* target_dir = __find(wd->sub_dirs, token, &prior_last);
       if(target_dir) // se o diretório foi encontrado
         wd = target_dir; // entra no diretório
       else { // diretório não existe, logo deve ser criado
@@ -200,7 +170,7 @@ ret_t cd(const char* pathname) {
       wd = &root; // volta ao diretório raiz
     else {
       // busca pelo diretório em 'wd'
-      target_dir = __find_directory(wd->sub_dirs, token, NULL);
+      target_dir = __find(wd->sub_dirs, token, NULL);
 
       // verifica se o diretório foi encontrado
       if(target_dir)
