@@ -32,6 +32,7 @@ ret_t touch(const char* pathname) {
 
   // Pega a referência do diretório atual
   Directory* wd = pwd();
+  Directory* save_wd = wd;
 
   char* path_copy = strdup(pathname); // cria cópia de pathname
   char* filename = NULL; // nome do arquivo
@@ -60,7 +61,7 @@ ret_t touch(const char* pathname) {
 
   // verifica se o diretório de trabalho possui arquivos
   if(wd->files) {
-    File* last = NULL; // caso o arquivo com nome 'name' não seja encontrado, o último arquivo da lista será apontado por 'last' 
+    File* last = NULL; // caso o arquivo com nome 'name' não seja encontrado, o último arquivo da lista será apontado por 'last'
     File* target_file = __find(wd->files, filename, (void*) &last);
     if(target_file) // arquivo encontrado
       return EEXIST;
@@ -71,6 +72,14 @@ ret_t touch(const char* pathname) {
   }
   else
     wd->files = new_file;
+
+  // Sim, isso é um put* gambiarra pra voltar pro diretório que invocou o comando 'touch'
+  // Não posso manipular diretamente o variável wd, pois ela é static do arquivo directory.c
+  // Ainda não sei como vou resolver isso.
+  char* temp_fullpath = strdup(save_wd->fullpath);
+  temp_fullpath[3] = '~';
+  cd(temp_fullpath + 3);
+  free(temp_fullpath);
 
   return SUCCESS; // arquivo inserido com sucesso!
 }
