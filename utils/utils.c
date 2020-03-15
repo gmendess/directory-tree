@@ -5,6 +5,12 @@
 #include "utils.h"
 #include "../directory/directory.h"
 
+// Função interna que percorre uma lista encadeada buscando pelo nó desejado.
+// Obs:
+//   - Não valida se 'generic' é um ponteiro válido.
+//   - Se 'target_name' for NULL, procura pelo ultimo nó da lista
+//   - Retorna NULL apenas caso não exista nenhum nó com nome 'target_name'
+//   - Salva em preview o nó anterior ao nó desejado. Por padrão, *preview vai apontar no mínimo para generic
 void* __find(void* _generic, const char* target_name, void** preview) {
   Generic* generic = _generic;
 
