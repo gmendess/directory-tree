@@ -176,7 +176,6 @@ ret_t cd(const char* pathname) {
       if(target_dir)
         wd = target_dir; // se sim, entra nesse diretório
       else {
-        fprintf(stderr, "O caminho \"%s\" nao existe!\n", pathname);
         wd = save_wd; // se o caminho for inválido, wd retorna para o diretório inicial
         return EPATH;
       }
