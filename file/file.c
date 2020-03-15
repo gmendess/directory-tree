@@ -26,16 +26,51 @@ File* alloc_file(const char* name) {
   return new_file;
 }
 
-ret_t touch(const char* name) {
-  if(!name)
+ret_t touch(const char* pathname) {
+  if(!pathname)
     return ENAME;
 
-  // adquirindo referência para o diretório de trabalho
+  // Pega a referência do diretório atual
   Directory* wd = pwd();
 
-  File* new_file = alloc_file(name);
-  new_file->next = wd->files;
-  wd->files = new_file;
+  char* path_copy = strdup(pathname); // cria cópia de pathname
+  char* filename = NULL; // nome do arquivo
 
-  return SUCCESS;
+  // O pedaço de código abaixo é responsável por separar o caminho do nome do arquivo. Ou seja, se eu der
+  // 'touch foo/bar/file.txt', o diretório que o arquivo 'file.txt' deve ser adiconado é o 'foo/bar/'
+  
+  char* bar_last_ocurrence = strrchr(path_copy, '/'); // procura a última ocorrência do caractere '/'
+  // última ocorrência foi encontrada
+  if(bar_last_ocurrence) {
+    *bar_last_ocurrence = '\0'; // substitui a barra por um caractere de término ( 'foo/bar\0file.txt' )
+    filename = bar_last_ocurrence + 1; // file.txt
+
+    // tenta entrar no diretório que o arquivo deve ser adicionado. A função cd usa strtok para dar parse no caminho e
+    // strtok lê uma string até o caractere de término, logo ele lerá apenas 'foo/bar\0'
+    if(cd(path_copy) == EPATH)
+      return EPATH; // caminho passado é inválido, retorna EPATH
+    
+    wd = pwd(); // atualiza a referência do diretório atual
+  }
+  else
+    filename = path_copy; // se nenhum diretório foi passado, o nome do arquivo é o próprio pathname
+
+  // Cria o arquivo
+  File* new_file = alloc_file(filename);
+
+  // verifica se o diretório de trabalho possui arquivos
+  if(wd->files) {
+    File* last = NULL; // caso o arquivo com nome 'name' não seja encontrado, o último arquivo da lista será apontado por 'last' 
+    File* target_file = __find(wd->files, filename, (void*) &last);
+    if(target_file) // arquivo encontrado
+      return EEXIST;
+    else { // arquivo não encontrado
+      new_file->preview = last;
+      last->next = new_file;
+    }
+  }
+  else
+    wd->files = new_file;
+
+  return SUCCESS; // arquivo inserido com sucesso!
 }
