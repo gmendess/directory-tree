@@ -33,6 +33,14 @@ int main() {
       if(rmdir(token) == EPATH)
         puts("Erro! Caminho passado nao existe!");
     }
+    else if(strcmp(token, "touch") == 0) {
+      token = strtok(NULL, " ");
+      ret_t ret = touch(token);
+      if(ret == EEXIST)
+        puts("Erro! Arquivo ja existe nesse diretorio!");
+      else if(ret == ENAME)
+        puts("Erro! Nome do arquivo inválido!");
+    }
     else if(strcmp(token, "tree") == 0)
       tree();
     else
