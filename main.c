@@ -5,15 +5,6 @@
 #include "directory/directory.h"
 #include "utils/utils.h"
 
-static void __temp_list_files(void) {
-  Directory* wd = pwd();
-  File* file = wd->files; 
-  while(file) {
-    puts(file->name);
-    file = file->next;
-  }
-}
-
 int main() {
 
   init();
@@ -52,8 +43,8 @@ int main() {
     }
     else if(strcmp(token, "tree") == 0)
       tree();
-    else if(strcmp(token, "lf") == 0)
-      __temp_list_files();
+    else if(strcmp(token, "ls") == 0)
+      ls();
     else
       printf("Comando \"%s\" nao encontrado!\n", token);
 
