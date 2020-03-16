@@ -102,6 +102,8 @@ ret_t ls(void) {
   Directory* wd = pwd();
   char time_buffer[256];
 
+  printf("\nDirectory: %s/\n\n", wd->fullpath);
+
   printf("%-10s\t%-5s\t%s\n", "Date", "Time", "Name");
   Directory* dir = wd->sub_dirs;
   while(dir) {
