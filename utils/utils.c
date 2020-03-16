@@ -97,3 +97,26 @@ char* make_fullpath(const char* wd_fullpath, const char* name) {
 
   return fullpath;
 }
+
+ret_t ls(void) {
+  Directory* wd = pwd();
+  char time_buffer[256];
+
+  printf("%-10s\t%-5s\t%s\n", "Date", "Time", "Name");
+  Directory* dir = wd->sub_dirs;
+  while(dir) {
+    strftime(time_buffer, sizeof(time_buffer), "%d/%m/%Y\t%H:%M", &dir->creation_time);
+    printf("%s\t%s/\n", time_buffer, dir->name);
+    dir = dir->next;
+  }
+
+  File* file = wd->files;
+  while(file) {
+    strftime(time_buffer, sizeof(time_buffer), "%d/%m/%Y\t%H:%M", &file->creation_time);
+    printf("%s\t%s\n", time_buffer, file->name);
+    file = file->next;
+  }
+
+  putchar(10);
+  return SUCCESS;
+}

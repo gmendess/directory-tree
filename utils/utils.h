@@ -40,4 +40,7 @@ char* make_fullpath(const char* wd_fullpath, const char* name);
 // busca por um diretório ou um arquivo em uma lista de diretórios ou de arquivos
 void* __find(void* _generic, const char* target_name, void** preview);
 
+// lista o conteúdo de um diretório, ou seja, seus arquivos e diretórios filhos 
+ret_t ls(void);
+
 #endif // _UTILS_H_
